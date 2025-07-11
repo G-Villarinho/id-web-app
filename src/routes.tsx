@@ -1,10 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import { LoginPage } from "@/pages/auth/sign-in";
+import { SignInPage } from "@/pages/auth/sign-in";
+import { SignUpPage } from "@/pages/auth/sign-up";
 
 export const router = createBrowserRouter([
   {
     path: "/sign-in",
-    element: <LoginPage />,
+    element: <SignInPage />,
+  },
+  {
+    path: "/sign-up",
+    element: <SignUpPage />,
   },
 ]);

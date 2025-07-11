@@ -1,105 +1,59 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { toast } from "react-hot-toast";
-import { Mail, Loader2 } from "lucide-react";
-
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
   Form,
-  FormControl,
   FormField,
   FormItem,
-  FormLabel,
+  FormControl,
   FormMessage,
 } from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ChromeIcon, AppleIcon } from "@/components/icons";
 
-// Schema de validação com Zod
-const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, "E-mail é obrigatório")
-    .email("Digite um e-mail válido"),
+const signInSchema = z.object({
+  email: z.email("Email inválido"),
 });
 
-type LoginFormData = z.infer<typeof loginSchema>;
+type SignInFormValues = z.infer<typeof signInSchema>;
 
-export function LoginPage() {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const form = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+export function SignInPage() {
+  const form = useForm<SignInFormValues>({
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  function handleLogin(data: LoginFormData) {
-    setIsLoading(true);
-
-    try {
-      // TODO: Implementar chamada real à API aqui
-      // Simulando uma chamada de API
-      setTimeout(() => {
-        // Simulando sucesso
-        toast.success("Código de acesso enviado para seu e-mail!");
-        navigate("/verify-code");
-        setIsLoading(false);
-      }, 1500);
-    } catch (error) {
-      // Simulando erro
-      toast.error("Erro ao enviar código. Tente novamente.");
-      console.error("Erro na autenticação:", error);
-      setIsLoading(false);
-    }
+  function handleSubmit(data: SignInFormValues) {
+    // lógica de autenticação
+    // por enquanto só console.log
+    console.log(data);
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
-      <Card className="w-full max-w-md shadow-xl border-0 bg-white/80 backdrop-blur-sm">
-        <CardHeader className="space-y-2 text-center pb-6">
-          <div className="mx-auto w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-            <Mail className="w-6 h-6 text-blue-600" />
-          </div>
-          <CardTitle className="text-2xl font-semibold text-slate-900">
-            Acesse sua conta
-          </CardTitle>
-          <CardDescription className="text-slate-600">
-            Insira seu e-mail para receber um código de acesso.
-          </CardDescription>
-        </CardHeader>
-
-        <CardContent>
+    <div className="min-h-screen flex items-center justify-center">
+      <Card className="w-full max-w-md p-0 rounded-2xl shadow-2xl border-none bg-[rgba(20,20,20,0.95)]">
+        <CardContent className="pt-8 pb-8 px-6">
+          <h2 className="text-xl font-semibold mb-2 text-white">
+            Sign in to your account
+          </h2>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(handleLogin)}
-              className="space-y-6"
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-4"
             >
               <FormField
-                control={form.control}
                 name="email"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-slate-700">
-                      E-mail
-                    </FormLabel>
                     <FormControl>
                       <Input
+                        placeholder="Enter your email"
                         type="email"
-                        placeholder="seu@email.com"
-                        className="h-11 px-4 border-slate-200 focus:border-blue-500 focus:ring-blue-500"
-                        disabled={isLoading}
                         {...field}
                       />
                     </FormControl>
@@ -107,23 +61,32 @@ export function LoginPage() {
                   </FormItem>
                 )}
               />
-
-              <Button
-                type="submit"
-                className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Enviando...
-                  </>
-                ) : (
-                  "Continuar"
-                )}
+              <Button type="submit" className="w-full mt-2">
+                Continue
               </Button>
             </form>
           </Form>
+          <div className="flex items-center my-6">
+            <div className="flex-1 h-px bg-white/10" />
+            <span className="mx-4 text-xs text-white/60">OR SIGN IN WITH</span>
+            <div className="flex-1 h-px bg-white/10" />
+          </div>
+          <div className="flex gap-4">
+            <Button
+              variant="outline"
+              className="flex-1 flex items-center justify-center gap-2 bg-[#232323] text-white border-none"
+            >
+              <ChromeIcon className="size-5 text-white" />
+              Google
+            </Button>
+            <Button
+              variant="outline"
+              className="flex-1 flex items-center justify-center gap-2 bg-[#232323] text-white border-none"
+            >
+              <AppleIcon className="size-5" />
+              Apple
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

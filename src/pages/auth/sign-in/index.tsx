@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChromeIcon, AppleIcon } from "@/components/icons";
+import { AtSignIcon, Lock } from "lucide-react";
 
 const signInSchema = z.object({
   email: z.email("Email inválido"),
@@ -37,9 +38,15 @@ export function SignInPage() {
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-md p-0 rounded-2xl shadow-2xl border-none bg-[rgba(20,20,20,0.95)]">
         <CardContent className="pt-8 pb-8 px-6">
-          <h2 className="text-xl font-semibold mb-2 text-white">
-            Sign in to your account
-          </h2>
+          <div className="mb-6">
+            <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-4">
+              <Lock className="w-6 h-6 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold mb-2 text-white">Welcome back</h2>
+            <p className="text-white/60 text-sm">
+              Sign in to your account to continue
+            </p>
+          </div>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
@@ -51,17 +58,28 @@ export function SignInPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="Enter your email"
-                        type="email"
-                        {...field}
-                      />
+                      <div className="*:not-first:mt-2">
+                        <div className="relative">
+                          <Input
+                            className="peer ps-9 h-11"
+                            placeholder="Email"
+                            type="email"
+                            {...field}
+                          />
+                          <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+                            <AtSignIcon size={16} aria-hidden="true" />
+                          </div>
+                        </div>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full mt-2">
+              <Button
+                type="submit"
+                className="w-full mt-2 bg-violet-600 hover:bg-violet-700 text-violet-200 font-semibold"
+              >
                 Continue
               </Button>
             </form>

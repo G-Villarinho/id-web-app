@@ -19,11 +19,7 @@ const signInSchema = z.object({
 
 type SignInFormValues = z.infer<typeof signInSchema>;
 
-interface SignInFormProps {
-  onSubmit: (data: SignInFormValues) => void;
-}
-
-export function SignInForm({ onSubmit }: SignInFormProps) {
+export function SignInForm() {
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -31,13 +27,13 @@ export function SignInForm({ onSubmit }: SignInFormProps) {
     },
   });
 
-  function handleSubmit(data: SignInFormValues) {
-    onSubmit(data);
+  function handleSignIn(data: SignInFormValues) {
+    console.log(data);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleSignIn)} className="space-y-4">
         <FormField
           name="email"
           control={form.control}
@@ -60,7 +56,7 @@ export function SignInForm({ onSubmit }: SignInFormProps) {
         >
           <span className="flex items-center justify-center gap-2">
             Continue with email
-            <ArrowRight className="w-4 h-4 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1" />
+            <ArrowRight className="size-4 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1" />
           </span>
         </Button>
       </form>

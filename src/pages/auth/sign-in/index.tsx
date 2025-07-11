@@ -12,10 +12,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChromeIcon, AppleIcon } from "@/components/icons";
-import { AtSignIcon, Lock } from "lucide-react";
+import { Lock, ArrowRight } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 const signInSchema = z.object({
-  email: z.email("Email inválido"),
+  email: z.email("Invalid e-mail address."),
 });
 
 type SignInFormValues = z.infer<typeof signInSchema>;
@@ -58,18 +59,14 @@ export function SignInPage() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <div className="*:not-first:mt-2">
-                        <div className="relative">
-                          <Input
-                            className="peer ps-9 h-11"
-                            placeholder="Email"
-                            type="email"
-                            {...field}
-                          />
-                          <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
-                            <AtSignIcon size={16} aria-hidden="true" />
-                          </div>
-                        </div>
+                      <div className="flex flex-col gap-2">
+                        <Label htmlFor="email">Email</Label>
+                        <Input
+                          className="peer"
+                          type="email"
+                          autoFocus
+                          {...field}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />
@@ -78,9 +75,13 @@ export function SignInPage() {
               />
               <Button
                 type="submit"
-                className="w-full mt-2 bg-violet-600 hover:bg-violet-700 text-violet-200 font-semibold"
+                className="w-full group relative overflow-hidden"
+                size="lg"
               >
-                Continue
+                <span className="flex items-center justify-center gap-2">
+                  Continue with email
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
               </Button>
             </form>
           </Form>

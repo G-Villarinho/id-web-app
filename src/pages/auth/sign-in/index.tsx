@@ -1,34 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ChromeIcon, AppleIcon } from "@/components/icons";
-import { Lock, ArrowRight } from "lucide-react";
-import { Label } from "@/components/ui/label";
+import { Lock } from "lucide-react";
+import { SignInForm } from "./sign-in-form";
 
-const signInSchema = z.object({
-  email: z.email("Invalid e-mail address."),
-});
-
-type SignInFormValues = z.infer<typeof signInSchema>;
+type SignInFormValues = {
+  email: string;
+};
 
 export function SignInPage() {
-  const form = useForm<SignInFormValues>({
-    resolver: zodResolver(signInSchema),
-    defaultValues: {
-      email: "",
-    },
-  });
-
   function handleSubmit(data: SignInFormValues) {
     // lógica de autenticação
     // por enquanto só console.log
@@ -48,43 +28,7 @@ export function SignInPage() {
               Sign in to your account to continue
             </p>
           </div>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-4"
-            >
-              <FormField
-                name="email"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <div className="flex flex-col gap-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                          className="peer"
-                          type="email"
-                          autoFocus
-                          {...field}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button
-                type="submit"
-                className="w-full group relative overflow-hidden"
-                size="lg"
-              >
-                <span className="flex items-center justify-center gap-2">
-                  Continue with email
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </span>
-              </Button>
-            </form>
-          </Form>
+          <SignInForm onSubmit={handleSubmit} />
           <div className="flex items-center my-6">
             <div className="flex-1 h-px bg-white/10" />
             <span className="mx-4 text-xs text-white/60">OR SIGN IN WITH</span>

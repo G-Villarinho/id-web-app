@@ -76,14 +76,14 @@ export function SignInPage() {
               variant="outline"
               className="flex-1 flex items-center justify-center gap-2 bg-[#232323] text-white border-none"
             >
-              <ChromeIcon className="size-5 text-white" />
+              <ChromeIcon className="size-5" style={{ fill: "white" }} />
               Google
             </Button>
             <Button
               variant="outline"
               className="flex-1 flex items-center justify-center gap-2 bg-[#232323] text-white border-none"
             >
-              <AppleIcon className="size-5" />
+              <AppleIcon className="size-5" style={{ fill: "white" }} />
               Apple
             </Button>
           </div>

@@ -25,45 +25,45 @@ import {
 } from "@/components/ui/form";
 
 // Schema de validação com Zod
-const signInSchema = z.object({
+const loginSchema = z.object({
   email: z
     .string()
     .min(1, "E-mail é obrigatório")
     .email("Digite um e-mail válido"),
 });
 
-type SignInFormData = z.infer<typeof signInSchema>;
+type LoginFormData = z.infer<typeof loginSchema>;
 
-export function SignInPage() {
+export function LoginPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<SignInFormData>({
-    resolver: zodResolver(signInSchema),
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
     },
   });
 
-  const onSubmit = async (_data: SignInFormData) => {
+  function handleLogin(data: LoginFormData) {
     setIsLoading(true);
 
     try {
       // TODO: Implementar chamada real à API aqui
       // Simulando uma chamada de API
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      // Simulando sucesso
-      toast.success("Código de acesso enviado para seu e-mail!");
-      navigate("/verify-code");
+      setTimeout(() => {
+        // Simulando sucesso
+        toast.success("Código de acesso enviado para seu e-mail!");
+        navigate("/verify-code");
+        setIsLoading(false);
+      }, 1500);
     } catch (error) {
       // Simulando erro
       toast.error("Erro ao enviar código. Tente novamente.");
       console.error("Erro na autenticação:", error);
-    } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 p-4">
@@ -82,7 +82,10 @@ export function SignInPage() {
 
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form
+              onSubmit={form.handleSubmit(handleLogin)}
+              className="space-y-6"
+            >
               <FormField
                 control={form.control}
                 name="email"

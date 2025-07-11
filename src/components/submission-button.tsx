@@ -3,6 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 const submissionButtonVariants = cva(
   "cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -14,7 +15,7 @@ const submissionButtonVariants = cva(
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
-          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "border bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost:
@@ -40,10 +41,13 @@ function SubmissionButton({
   variant,
   size,
   asChild = false,
+  loading,
+  children,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof submissionButtonVariants> & {
     asChild?: boolean;
+    loading?: boolean;
   }) {
   const Comp = asChild ? Slot : "button";
 
@@ -51,8 +55,32 @@ function SubmissionButton({
     <Comp
       data-slot="button"
       className={cn(submissionButtonVariants({ variant, size, className }))}
+      disabled={loading || props.disabled}
       {...props}
-    />
+    >
+      <div className="relative flex items-center justify-center w-full ">
+        <div
+          className={cn(
+            "transition-transform duration-300 ease-in-out",
+            loading && "transform -translate-y-full opacity-0"
+          )}
+        >
+          {children}
+        </div>
+        <div
+          className={cn(
+            "absolute inset-0 flex items-center justify-center transition-transform duration-300 ease-in-out",
+            loading
+              ? "transform translate-y-0 opacity-100"
+              : "transform translate-y-full opacity-0"
+          )}
+        >
+          <div className="flex items-center gap-2">
+            <Loader2 className="animate-spin size-6" />
+          </div>
+        </div>
+      </div>
+    </Comp>
   );
 }
 

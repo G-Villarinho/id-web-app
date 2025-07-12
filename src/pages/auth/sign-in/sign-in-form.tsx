@@ -15,6 +15,7 @@ import { SubmissionButton } from "@/components/submission-button";
 import { useLogin } from "@/http/hooks";
 import { useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
+import { useAuth } from "../provider";
 
 const signInSchema = z.object({
   email: z.email("Invalid e-mail address."),
@@ -28,6 +29,7 @@ interface SignInFormProps {
 
 export function SignInForm({ continueUrl }: SignInFormProps) {
   const navigate = useNavigate();
+  const { setEmail } = useAuth();
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
@@ -48,6 +50,7 @@ export function SignInForm({ continueUrl }: SignInFormProps) {
         onError: (error) => {
           if (isAxiosError(error)) {
             if (error.response?.status === 404) {
+              setEmail(email);
               navigate(`/account-not-found?continue=${continueUrl}`);
             }
           }

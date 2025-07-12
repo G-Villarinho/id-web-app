@@ -16,6 +16,10 @@ export const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
+        path: "/",
+        element: <SignInPage />,
+      },
+      {
         path: "/sign-in",
         element: <SignInPage />,
       },
@@ -30,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "/verify-code",
         element: <VerifyCodePage />,
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
       },
     ],
   },

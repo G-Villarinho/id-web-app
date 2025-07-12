@@ -8,7 +8,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [email, setEmail] = useState<string | null>("gabriel@aetheris.com");
+  const [email, setEmail] = useState<string | null>(null);
 
   return (
     <AuthContext.Provider value={{ email, setEmail }}>

@@ -14,8 +14,8 @@ export function AccountNotFoundPage() {
     throw new Error("Continue url not found.");
   }
 
-  if (email) {
-    return <Navigate to={continueUrl} replace />;
+  if (!email) {
+    return <Navigate to={`/sign-in?continue=${continueUrl}`} replace />;
   }
 
   return (

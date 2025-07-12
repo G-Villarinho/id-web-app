@@ -9,13 +9,14 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Plus } from "lucide-react";
+
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useLogin } from "@/http/hooks";
 import { useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
 import { useAuth } from "../provider";
+import { SubmissionButton } from "@/components/submission-button";
 
 const accountNotFoundSchema = z.object({
   email: z.email("Invalid email address."),
@@ -90,17 +91,16 @@ export function AccountNotFoundForm({ continueUrl }: AccountNotFoundFormProps) {
           )}
         />
         <div className="flex gap-3">
-          <Button
+          <SubmissionButton
             type="submit"
             className="flex-1 group relative overflow-hidden"
             size="lg"
-            disabled={isPending}
+            loading={isPending}
           >
             <span className="flex items-center justify-center gap-2">
               Tentar novamente
-              <ArrowRight className="size-4 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1" />
             </span>
-          </Button>
+          </SubmissionButton>
           <Button
             type="button"
             variant="outline"
@@ -111,7 +111,6 @@ export function AccountNotFoundForm({ continueUrl }: AccountNotFoundFormProps) {
           >
             <span className="flex items-center justify-center gap-2">
               Criar conta
-              <Plus className="size-4 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-110" />
             </span>
           </Button>
         </div>

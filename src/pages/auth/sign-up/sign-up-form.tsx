@@ -50,7 +50,7 @@ export function SignUpForm({ continueUrl }: SignUpFormProps) {
       {
         onSuccess: () => {
           setEmail(email);
-          navigate(`/verify-code?continue=${continueUrl}`);
+          navigate(`/verify-code?continue=${encodeURIComponent(continueUrl)}`);
         },
         onError: (error) => {
           if (isAxiosError(error)) {

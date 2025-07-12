@@ -46,13 +46,15 @@ export function SignInForm({ continueUrl }: SignInFormProps) {
       {
         onSuccess: () => {
           setEmail(email);
-          navigate(`/verify-code?continue=${continueUrl}`);
+          navigate(`/verify-code?continue=${encodeURIComponent(continueUrl)}`);
         },
         onError: (error) => {
           if (isAxiosError(error)) {
             if (error.response?.status === 404) {
               setEmail(email);
-              navigate(`/account-not-found?continue=${continueUrl}`);
+              navigate(
+                `/account-not-found?continue=${encodeURIComponent(continueUrl)}`
+              );
             }
           }
         },

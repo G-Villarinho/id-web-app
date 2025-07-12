@@ -46,7 +46,7 @@ export function AccountNotFoundForm({ continueUrl }: AccountNotFoundFormProps) {
       {
         onSuccess: () => {
           setEmail(email);
-          navigate(`/verify-code?continue=${continueUrl}`);
+          navigate(`/verify-code?continue=${encodeURIComponent(continueUrl)}`);
         },
         onError: (error) => {
           if (isAxiosError(error)) {
@@ -61,7 +61,7 @@ export function AccountNotFoundForm({ continueUrl }: AccountNotFoundFormProps) {
   }
 
   function handleCreateAccount() {
-    navigate(`/sign-up?continue=${continueUrl}`);
+    navigate(`/sign-up?continue=${encodeURIComponent(continueUrl)}`);
   }
 
   return (

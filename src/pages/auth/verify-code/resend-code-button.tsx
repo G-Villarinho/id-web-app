@@ -62,10 +62,10 @@ export function ResendCodeButton({
       <Button
         type="button"
         variant="ghost"
-        size="sm"
+        size="lg"
         onClick={handleResendCode}
         disabled={isButtonDisabled}
-        className="text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+        className="w-full text-white/60 hover:text-white hover:bg-white/10 transition-colors"
       >
         <RefreshCw className={cn("size-4 mr-2", isLoading && "animate-spin")} />
         {countdown > 0 ? `Resend in ${countdown}s` : "Resend code"}

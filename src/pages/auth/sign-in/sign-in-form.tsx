@@ -12,6 +12,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { SubmissionButton } from "@/components/submission-button";
+import { useLogin } from "@/http/hooks";
+import { useNavigate } from "react-router-dom";
+import { isAxiosError } from "axios";
 
 const signInSchema = z.object({
   email: z.email("Invalid e-mail address."),
@@ -24,6 +27,8 @@ interface SignInFormProps {
 }
 
 export function SignInForm({ continueUrl }: SignInFormProps) {
+  const navigate = useNavigate();
+
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -31,9 +36,24 @@ export function SignInForm({ continueUrl }: SignInFormProps) {
     },
   });
 
-  async function handleSignIn(data: SignInFormValues) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
+  const { mutateAsync: login } = useLogin();
+
+  async function handleSignIn({ email }: SignInFormValues) {
+    await login(
+      { email },
+      {
+        onSuccess: () => {
+          navigate(continueUrl);
+        },
+        onError: (error) => {
+          if (isAxiosError(error)) {
+            if (error.response?.status === 404) {
+              navigate(`/account-not-found?continue=${continueUrl}`);
+            }
+          }
+        },
+      }
+    );
   }
 
   return (

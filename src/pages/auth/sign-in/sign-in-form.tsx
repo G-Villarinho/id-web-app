@@ -45,7 +45,7 @@ export function SignInForm({ continueUrl }: SignInFormProps) {
       { email },
       {
         onSuccess: () => {
-          navigate(continueUrl);
+          navigate(`/verify-code?continue=${continueUrl}`);
         },
         onError: (error) => {
           if (isAxiosError(error)) {

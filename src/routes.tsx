@@ -8,6 +8,7 @@ import { SignInPage } from "@/pages/auth/sign-in";
 import { SignUpPage } from "@/pages/auth/sign-up";
 import { AccountNotFoundPage } from "@/pages/auth/account-not-found";
 import { NotFoundPage } from "@/pages/errors/404";
+import { VerifyCodePage } from "./pages/auth/verify-code";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
       {
         path: "/account-not-found",
         element: <AccountNotFoundPage />,
+      },
+      {
+        path: "/verify-code",
+        element: <VerifyCodePage />,
       },
     ],
   },

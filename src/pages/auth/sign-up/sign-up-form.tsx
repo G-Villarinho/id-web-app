@@ -47,7 +47,7 @@ export function SignUpForm({ continueUrl }: SignUpFormProps) {
       { firstName, lastName, email },
       {
         onSuccess: () => {
-          navigate(continueUrl);
+          navigate(`/verify-code?continue=${continueUrl}`);
         },
         onError: (error) => {
           if (isAxiosError(error)) {

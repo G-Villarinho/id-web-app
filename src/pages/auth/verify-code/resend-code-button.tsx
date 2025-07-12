@@ -54,6 +54,18 @@ export function ResendCodeButton({
 
   const { mutateAsync: resendCode, isPending: isLoading } = useResendCode();
 
+  function handleRateLimitError(retryAfterHeader: string) {
+    const secondsToWait = retryAfterHeader
+      ? parseInt(retryAfterHeader, 10)
+      : INITIAL_COUNTDOWN;
+
+    const cooldownUntil = Date.now() + secondsToWait * 1000;
+    setCountdown(secondsToWait);
+    localStorage.setItem(LOCAL_STORAGE_KEY, cooldownUntil.toString());
+
+    toast.error(`Please wait ${secondsToWait}s to resend the code.`);
+  }
+
   async function handleResendCode() {
     if (disabled || isLoading || countdown > 0) return;
 
@@ -68,21 +80,11 @@ export function ResendCodeButton({
         if (isAxiosError(error)) {
           if (error.response?.status === 429) {
             const retryAfterHeader = error.response.headers["retry-after"];
-
-            const secondsToWait = retryAfterHeader
-              ? parseInt(retryAfterHeader, 10)
-              : INITIAL_COUNTDOWN;
-
-            const cooldownUntil = Date.now() + secondsToWait * 1000;
-            setCountdown(secondsToWait);
-            localStorage.setItem(LOCAL_STORAGE_KEY, cooldownUntil.toString());
-
-            toast.error(`Please wait ${secondsToWait}s to resend the code.`);
+            handleRateLimitError(retryAfterHeader);
             return;
           }
 
           if (error.response?.status === 401) {
-            toast.error("Session expired. Please sign in again.");
             navigate("/sign-in", { replace: true });
             return;
           }

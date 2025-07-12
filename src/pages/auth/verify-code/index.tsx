@@ -1,6 +1,6 @@
 import { Meta, Title } from "react-head";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield } from "lucide-react";
+import { KeyRound } from "lucide-react";
 import { VerifyCodeForm } from "./verify-code-form";
 import { useQueryState } from "@/hooks/use-query-state";
 
@@ -21,7 +21,7 @@ export function VerifyCodePage() {
         <CardContent className="pt-8 pb-8 px-6">
           <div className="mb-6">
             <div className="size-12 bg-white/10 rounded-full flex items-center justify-center mb-4">
-              <Shield className="size-6 text-white" />
+              <KeyRound className="size-6 text-white" />
             </div>
             <h2 className="text-2xl font-bold mb-2 text-white">Verify code</h2>
             <p className="text-white/60 text-sm">

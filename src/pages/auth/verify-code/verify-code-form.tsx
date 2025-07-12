@@ -82,14 +82,33 @@ export function VerifyCodeForm({ continueUrl }: VerifyCodeFormProps) {
                       value={field.value}
                       onChange={field.onChange}
                       disabled={form.formState.isSubmitting}
+                      className="gap-4"
                     >
-                      <InputOTPGroup>
-                        <InputOTPSlot index={0} />
-                        <InputOTPSlot index={1} />
-                        <InputOTPSlot index={2} />
-                        <InputOTPSlot index={3} />
-                        <InputOTPSlot index={4} />
-                        <InputOTPSlot index={5} />
+                      <InputOTPGroup className="gap-4">
+                        <InputOTPSlot
+                          index={0}
+                          className="size-12 text-lg border border-white/20 rounded-lg"
+                        />
+                        <InputOTPSlot
+                          index={1}
+                          className="size-12 text-lg border border-white/20 rounded-lg"
+                        />
+                        <InputOTPSlot
+                          index={2}
+                          className="size-12 text-lg border border-white/20 rounded-lg"
+                        />
+                        <InputOTPSlot
+                          index={3}
+                          className="size-12 text-lg border border-white/20 rounded-lg"
+                        />
+                        <InputOTPSlot
+                          index={4}
+                          className="size-12 text-lg border border-white/20 rounded-lg"
+                        />
+                        <InputOTPSlot
+                          index={5}
+                          className="size-12 text-lg border border-white/20 rounded-lg"
+                        />
                       </InputOTPGroup>
                     </InputOTP>
                   </div>

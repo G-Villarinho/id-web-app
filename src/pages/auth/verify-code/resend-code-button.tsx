@@ -59,8 +59,10 @@ export function ResendCodeButton({
 
     await resendCode(undefined, {
       onSuccess: () => {
+        const cooldownUntil = Date.now() + INITIAL_COUNTDOWN * 1000;
         setCountdown(INITIAL_COUNTDOWN);
-        localStorage.setItem(LOCAL_STORAGE_KEY, "true");
+        localStorage.setItem(LOCAL_STORAGE_KEY, cooldownUntil.toString());
+        toast.success("Code sent successfully!");
       },
       onError: (error) => {
         if (isAxiosError(error)) {
@@ -71,13 +73,16 @@ export function ResendCodeButton({
               ? parseInt(retryAfterHeader, 10)
               : INITIAL_COUNTDOWN;
 
+            const cooldownUntil = Date.now() + secondsToWait * 1000;
             setCountdown(secondsToWait);
+            localStorage.setItem(LOCAL_STORAGE_KEY, cooldownUntil.toString());
 
             toast.error(`Please wait ${secondsToWait}s to resend the code.`);
             return;
           }
 
           if (error.response?.status === 401) {
+            toast.error("Session expired. Please sign in again.");
             navigate("/sign-in", { replace: true });
             return;
           }

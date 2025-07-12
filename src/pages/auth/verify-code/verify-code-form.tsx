@@ -51,7 +51,7 @@ export function VerifyCodeForm({ continueUrl }: VerifyCodeFormProps) {
       },
       {
         onSuccess: () => {
-          navigate(continueUrl);
+          navigate(decodeURIComponent(continueUrl));
         },
         onError: (error) => {
           if (isAxiosError(error)) {
@@ -62,7 +62,7 @@ export function VerifyCodeForm({ continueUrl }: VerifyCodeFormProps) {
             }
 
             if (error.response?.status === 401) {
-              navigate("/sign-in", { replace: true });
+              navigate(`/sign-in?continue=${encodeURIComponent(continueUrl)}`);
             }
           }
         },

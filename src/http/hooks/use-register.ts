@@ -11,8 +11,8 @@ export function useRegister() {
   return useMutation({
     mutationFn: async ({ firstName, lastName, email }: RegisterRequest) => {
       await api.post("/auth/register", {
-        firstName,
-        lastName,
+        first_name: firstName,
+        last_name: lastName,
         email,
       });
     },

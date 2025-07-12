@@ -5,11 +5,10 @@ import { Lock } from "lucide-react";
 import { SignInForm } from "./sign-in-form";
 import { Meta, Title } from "react-head";
 
-import { useSearchParams } from "react-router-dom";
+import { useQueryState } from "@/hooks/use-query-state";
 
 export function SignInPage() {
-  const [searchParams] = useSearchParams();
-  const continueUrl = searchParams.get("continue");
+  const [continueUrl] = useQueryState("continue");
 
   if (!continueUrl) {
     throw new Error("Continue url not found.");

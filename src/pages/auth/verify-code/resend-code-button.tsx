@@ -61,7 +61,7 @@ export function ResendCodeButton({
     <div className={cn("flex flex-col items-center gap-2", className)}>
       <Button
         type="button"
-        variant="ghost"
+        variant="outline"
         size="lg"
         onClick={handleResendCode}
         disabled={isButtonDisabled}

@@ -2,6 +2,7 @@ import { Meta, Title } from "react-head";
 import { Card, CardContent } from "@/components/ui/card";
 import { KeyRound } from "lucide-react";
 import { VerifyCodeForm } from "./verify-code-form";
+import { ResendCodeButton } from "./resend-code-button";
 import { useQueryState } from "@/hooks/use-query-state";
 
 export function VerifyCodePage() {
@@ -29,6 +30,7 @@ export function VerifyCodePage() {
             </p>
           </div>
           <VerifyCodeForm continueUrl={continueUrl} />
+          <ResendCodeButton className="mt-4" />
         </CardContent>
       </Card>
     </>

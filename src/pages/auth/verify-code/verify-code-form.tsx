@@ -52,11 +52,6 @@ export function VerifyCodeForm({ continueUrl }: VerifyCodeFormProps) {
     navigate(continueUrl);
   }
 
-  function handleResendCode() {
-    // Logic to resend code
-    console.log("Resending code to:", email);
-  }
-
   return (
     <Form {...form}>
       <form
@@ -134,17 +129,6 @@ export function VerifyCodeForm({ continueUrl }: VerifyCodeFormProps) {
             <ArrowRight className="size-4 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-1" />
           </span>
         </SubmissionButton>
-
-        <div className="text-center">
-          <button
-            type="button"
-            onClick={handleResendCode}
-            disabled={form.formState.isSubmitting}
-            className="text-sm text-white/60 hover:text-white transition-colors underline disabled:opacity-50"
-          >
-            Didn't receive the code? Resend
-          </button>
-        </div>
       </form>
     </Form>
   );

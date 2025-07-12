@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { isAxiosError } from "axios";
 import { SubmissionButton } from "@/components/submission-button";
 import { ArrowRight } from "lucide-react";
+import { useAuth } from "../provider";
 
 const signUpSchema = z.object({
   firstName: z.string().min(1, "Name is required."),
@@ -29,6 +30,7 @@ interface SignUpFormProps {
 }
 
 export function SignUpForm({ continueUrl }: SignUpFormProps) {
+  const { setEmail } = useAuth();
   const navigate = useNavigate();
 
   const form = useForm<SignUpFormValues>({
@@ -47,6 +49,7 @@ export function SignUpForm({ continueUrl }: SignUpFormProps) {
       { firstName, lastName, email },
       {
         onSuccess: () => {
+          setEmail(email);
           navigate(`/verify-code?continue=${continueUrl}`);
         },
         onError: (error) => {

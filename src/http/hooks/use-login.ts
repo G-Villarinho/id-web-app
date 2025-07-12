@@ -8,7 +8,7 @@ interface LoginRequest {
 export function useLogin() {
   return useMutation({
     mutationFn: async ({ email }: LoginRequest) => {
-      await api.post("/login", { email });
+      await api.post("/auth/login", { email });
     },
   });
 }

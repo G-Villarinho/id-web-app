@@ -3,56 +3,87 @@ import { Button } from "@/components/ui/button";
 import { RefreshCw, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "../provider";
+import { useResendCode } from "@/http/hooks/use-resend-code";
+import { isAxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
+const INITIAL_COUNTDOWN = 60;
+const LOCAL_STORAGE_KEY = "@aetherisid-authx/TE";
 
 interface ResendCodeButtonProps {
-  onResend?: () => void;
-  initialCountdown?: number;
   disabled?: boolean;
   className?: string;
 }
 
 export function ResendCodeButton({
-  onResend,
-  initialCountdown = 60,
   disabled = false,
   className,
 }: ResendCodeButtonProps) {
   const { email } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    const cooldownUntil = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (cooldownUntil) {
+      const remainingTime = Math.round(
+        (parseInt(cooldownUntil) - Date.now()) / 1000
+      );
 
+      if (remainingTime > 0) {
+        setCountdown(remainingTime);
+      } else {
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
     if (countdown > 0) {
       interval = setInterval(() => {
         setCountdown((prev) => prev - 1);
       }, 1000);
+    } else {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
     }
 
     return () => clearInterval(interval);
   }, [countdown]);
 
+  const { mutateAsync: resendCode, isPending: isLoading } = useResendCode();
+
   async function handleResendCode() {
     if (disabled || isLoading || countdown > 0) return;
 
-    setIsLoading(true);
+    await resendCode(undefined, {
+      onSuccess: () => {
+        setCountdown(INITIAL_COUNTDOWN);
+        localStorage.setItem(LOCAL_STORAGE_KEY, "true");
+      },
+      onError: (error) => {
+        if (isAxiosError(error)) {
+          if (error.response?.status === 429) {
+            const retryAfterHeader = error.response.headers["retry-after"];
 
-    try {
-      // Simulating API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+            const secondsToWait = retryAfterHeader
+              ? parseInt(retryAfterHeader, 10)
+              : INITIAL_COUNTDOWN;
 
-      if (onResend) {
-        onResend();
-      }
+            setCountdown(secondsToWait);
 
-      console.log("Resending code to:", email);
-      setCountdown(initialCountdown);
-    } catch (error) {
-      console.error("Error resending code:", error);
-    } finally {
-      setIsLoading(false);
-    }
+            toast.error(`Please wait ${secondsToWait}s to resend the code.`);
+            return;
+          }
+
+          if (error.response?.status === 401) {
+            navigate("/sign-in", { replace: true });
+            return;
+          }
+        }
+      },
+    });
   }
 
   const isButtonDisabled = disabled || isLoading || countdown > 0;

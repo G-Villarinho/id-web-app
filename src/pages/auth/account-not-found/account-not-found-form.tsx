@@ -18,7 +18,7 @@ import { isAxiosError } from "axios";
 import { useAuth } from "../provider";
 
 const accountNotFoundSchema = z.object({
-  email: z.email("Endereço de e-mail inválido."),
+  email: z.email("Invalid email address."),
 });
 
 type AccountNotFoundFormValues = z.infer<typeof accountNotFoundSchema>;
@@ -45,7 +45,8 @@ export function AccountNotFoundForm({ continueUrl }: AccountNotFoundFormProps) {
       { email },
       {
         onSuccess: () => {
-          navigate(continueUrl);
+          setEmail(email);
+          navigate(`/verify-code?continue=${continueUrl}`);
         },
         onError: (error) => {
           if (isAxiosError(error)) {

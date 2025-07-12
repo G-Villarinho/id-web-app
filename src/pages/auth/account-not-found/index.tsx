@@ -20,7 +20,7 @@ export function AccountNotFoundPage() {
 
   return (
     <>
-      <Title>Account not found | Aetheris-Labs</Title>
+      <Title>Account not found | Aetheris.Labs</Title>
       <Meta
         name="description"
         content="No account was found with this email address"

@@ -10,7 +10,7 @@ export interface RegisterRequest {
 export function useRegister() {
   return useMutation({
     mutationFn: async ({ firstName, lastName, email }: RegisterRequest) => {
-      await api.post("/register", {
+      await api.post("/auth/register", {
         firstName,
         lastName,
         email,

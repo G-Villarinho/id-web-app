@@ -45,6 +45,7 @@ export function SignInForm({ continueUrl }: SignInFormProps) {
       { email },
       {
         onSuccess: () => {
+          setEmail(email);
           navigate(`/verify-code?continue=${continueUrl}`);
         },
         onError: (error) => {

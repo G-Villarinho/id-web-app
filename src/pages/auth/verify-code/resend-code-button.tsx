@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { RefreshCw, Mail } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAuth } from "../provider";
 import { useResendCode } from "@/http/hooks/use-resend-code";
 import { isAxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +19,6 @@ export function ResendCodeButton({
   disabled = false,
   className,
 }: ResendCodeButtonProps) {
-  const { email } = useAuth();
   const navigate = useNavigate();
   const [countdown, setCountdown] = useState(0);
 
@@ -105,14 +103,9 @@ export function ResendCodeButton({
         disabled={isButtonDisabled}
         className="w-full text-white/60 hover:text-white hover:bg-white/10 transition-colors"
       >
-        <RefreshCw className={cn("size-4 mr-2", isLoading && "animate-spin")} />
+        <RefreshCw className={cn("size-4", isLoading && "animate-spin")} />
         {countdown > 0 ? `Resend in ${countdown}s` : "Resend code"}
       </Button>
-
-      <div className="flex items-center gap-2 text-xs text-white/40">
-        <Mail className="size-3" />
-        <span>Code sent to {email}</span>
-      </div>
     </div>
   );
 }

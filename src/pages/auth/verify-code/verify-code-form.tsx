@@ -18,6 +18,8 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useAuthenticate } from "@/http/hooks/use-authenticate";
+import { isAxiosError } from "axios";
 
 const verifyCodeSchema = z.object({
   code: z.string().length(6, "Code must be 6 digits"),
@@ -40,16 +42,32 @@ export function VerifyCodeForm({ continueUrl }: VerifyCodeFormProps) {
     },
   });
 
+  const { mutateAsync: authenticate } = useAuthenticate();
+
   async function handleVerifyCode({ code }: VerifyCodeFormValues) {
-    // Simulating code verification
-    console.log("Verifying code:", code);
+    await authenticate(
+      {
+        code,
+      },
+      {
+        onSuccess: () => {
+          navigate(continueUrl);
+        },
+        onError: (error) => {
+          if (isAxiosError(error)) {
+            if (error.response?.status === 400) {
+              form.setError("code", {
+                message: "Invalid code. Please try again.",
+              });
+            }
 
-    // Here you would add the actual verification logic
-    // For example, an API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Redirecting to continue page
-    navigate(continueUrl);
+            if (error.response?.status === 401) {
+              navigate("/sign-in", { replace: true });
+            }
+          }
+        },
+      }
+    );
   }
 
   return (
@@ -109,7 +127,14 @@ export function VerifyCodeForm({ continueUrl }: VerifyCodeFormProps) {
                   </div>
                   <p className="text-white/60 text-xs text-center">
                     Enter the 6-digit code sent to{" "}
-                    <span className="font-medium text-white">{email}</span>
+                    {email && (
+                      <span className="font-medium text-white">{email}</span>
+                    )}
+                    {!email && (
+                      <span className="font-medium text-white">
+                        Your email address
+                      </span>
+                    )}
                   </p>
                 </div>
               </FormControl>

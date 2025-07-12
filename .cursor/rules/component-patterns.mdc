@@ -165,24 +165,6 @@ const [isLoading, setIsLoading] = useState(false)
 const [errors, setErrors] = useState({})
 ```
 
-## 🔄 Context API vs URL States
-
-### Prefira URL States (nuqs)
-```typescript
-// ✅ Correto - Para estados simples
-import { useQueryState } from 'nuqs'
-
-export function FilterComponent() {
-  const [category, setCategory] = useQueryState('category')
-  const [sortBy, setSortBy] = useQueryState('sort')
-  
-  return <div>...</div>
-}
-
-// ✅ Correto - Context apenas quando necessário
-// Para estados complexos que precisam ser compartilhados globalmente
-```
-
 ## 📝 Formulários
 
 ### Zod + React Hook Form

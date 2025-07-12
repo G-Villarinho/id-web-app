@@ -1,12 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
 
+// Layouts
+import { AuthLayout } from "@/pages/auth/layout";
+
+// Pages
 import { SignInPage } from "@/pages/auth/sign-in";
 import { SignUpPage } from "@/pages/auth/sign-up";
-import { AuthLayout } from "./pages/auth/layout";
+import { NotFoundPage } from "@/pages/errors/404";
 
 export const router = createBrowserRouter([
   {
     element: <AuthLayout />,
+    errorElement: <NotFoundPage />,
     children: [
       {
         path: "/sign-in",

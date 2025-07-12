@@ -51,7 +51,7 @@ export function VerifyCodeForm({ continueUrl }: VerifyCodeFormProps) {
       },
       {
         onSuccess: () => {
-          navigate(decodeURIComponent(continueUrl));
+          navigate(decodeURIComponent(continueUrl), { replace: true });
         },
         onError: (error) => {
           if (isAxiosError(error)) {

@@ -51,7 +51,7 @@ export function VerifyCodeForm({ continueUrl }: VerifyCodeFormProps) {
       },
       {
         onSuccess: () => {
-          navigate(decodeURIComponent(continueUrl), { replace: true });
+          window.location.href = decodeURIComponent(continueUrl);
         },
         onError: (error) => {
           if (isAxiosError(error)) {
